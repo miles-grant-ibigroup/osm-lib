@@ -115,7 +115,8 @@ public class PBFOutput implements OSMEntitySink, Runnable {
             downstream.write(serializedBlobHeader);
             downstream.write(serializedBlob);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            // Silently continue
+            LOG.warn("Failed to write to pipe, connection probably closed.");
         }
 
     }
