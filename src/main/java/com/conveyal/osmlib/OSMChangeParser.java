@@ -75,8 +75,8 @@ public class OSMChangeParser extends DefaultHandler {
         } else if (qName.equalsIgnoreCase("NODE")) {
             if (inDelete) {
                 osm.nodes.remove(id);
-            } else {
-                osm.nodes.put(id, (Node) entity);
+            } else if (id > -1) {
+                    osm.nodes.put(id, (Node) entity);
             }
         } else if (qName.equalsIgnoreCase("WAY")) {
             if (inDelete) {
@@ -86,13 +86,15 @@ public class OSMChangeParser extends DefaultHandler {
             } else {
                 Way way = ((Way)entity);
                 way.nodes = nodeRefs.toArray();
-                osm.ways.put(id, way);
-                waysModified.add(id); // record that this way was modified for later re-indexing.
+                if (id > -1) {
+                    osm.ways.put(id, way);
+                    waysModified.add(id); // record that this way was modified for later re-indexing.
+                }
             }
         } else if (qName.equalsIgnoreCase("RELATION")) {
             if (inDelete) {
                 osm.relations.remove(id);
-            } else {
+            } else if (id > -1) {
                 osm.relations.put(id, (Relation) entity);
             }
         }
